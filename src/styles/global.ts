@@ -17,7 +17,7 @@ export const GlobalStyle = createGlobalStyle`
     color: ${(props) => props.theme['base-text']};
     -webkit-font-smoothing: antialiased;
   }
-  
+
   body, input, button {
     font-family: "Nunito", sans-serif;
     font-weight: 400;
