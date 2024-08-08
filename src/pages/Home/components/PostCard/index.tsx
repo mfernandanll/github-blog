@@ -1,5 +1,6 @@
+import Markdown from "react-markdown";
 import { Issue } from "../../../../contexts/PostsContext";
-import { CardContainer } from "./styles";
+import { CardContainer, Description } from "./styles";
 import { formatDistanceToNow } from 'date-fns'
 import ptBR from 'date-fns/locale/pt-BR'
 
@@ -15,9 +16,10 @@ export function PostCard({ issue }: PostCardProps) {
         <span>{formatDistanceToNow(new Date(issue.createdAt), {addSuffix: true, locale: ptBR})}</span>
       </header>
 
-      <p>
-        {issue.description}
-      </p>
+      <Description>
+        <Markdown>{issue.description}</Markdown>
+      </Description>
+
     </CardContainer>
   )
 }

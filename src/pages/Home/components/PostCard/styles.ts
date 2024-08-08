@@ -37,17 +37,23 @@ export const CardContainer = styled.div`
       margin-top: 0.313rem;
     }
   }
+`
 
+export const Description = styled.div`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+          line-clamp: 4;
+  -webkit-box-orient: vertical;
+  
   p {
     font-size: 1rem;
     line-height: 1.6;
     color: ${(props) => props.theme["base-text"]};
+  }
 
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 4;
-            line-clamp: 4;
-    -webkit-box-orient: vertical;
+  h1 {
+    display: none;
   }
 `
