@@ -20,6 +20,13 @@ export const CardContainer = styled.div`
       font-weight: 700;
       line-height: 1.6;
       color: ${(props) => props.theme["base-title"]};
+
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+              line-clamp: 3;
+      -webkit-box-orient: vertical;
     }
 
     span {
