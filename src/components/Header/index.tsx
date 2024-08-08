@@ -1,13 +1,13 @@
 import logo from '../../assets/logo.png'
 import effect from '../../assets/effect.png'
-import { Container } from './styles'
+import { Container, LeftImage, Logo, RightImage } from './styles'
 
 export function Header(){
   return (
     <Container>
-      <img src={effect} />
-      <img src={logo} />
-      <img src={effect} />
+      <LeftImage src={effect} />
+      <Logo src={logo} />
+      <RightImage src={effect} />
     </Container>
   )
 }
