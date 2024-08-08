@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
-export const ProfileContainer = styled.header`
-  max-width: 64rem;
+export const ProfileContainer = styled.section`
+  max-width: 54rem;
   margin: -6rem auto 4.5rem;
   padding: 2.5rem 2rem;
 

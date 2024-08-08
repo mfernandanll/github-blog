@@ -5,8 +5,7 @@ export const SearchContainer = styled.div`
   flex-direction: column;
   gap: 1rem;
 
-  max-width: 64rem;
-  margin: 4.5rem auto 3rem;
+  margin-bottom: 3rem;
   
   header {
     display: flex;
