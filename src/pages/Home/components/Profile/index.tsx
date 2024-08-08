@@ -12,7 +12,7 @@ export function Profile() {
         <Header>
           <h1>Fernanda Loureiro</h1>
           <a href="https://github.com/mfernandanll">
-            GITHUB
+            Github
             <FontAwesomeIcon icon={faArrowUpRightFromSquare}/>
           </a>
         </Header>

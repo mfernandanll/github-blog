@@ -50,6 +50,7 @@ export const Header = styled.div`
     font-weight: 700;
     line-height: 1.6;
     text-decoration: none;
+    text-transform: uppercase;
 
     svg {
       margin-left: 0.8rem;
