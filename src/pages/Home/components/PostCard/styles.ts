@@ -10,6 +10,8 @@ export const CardContainer = styled.div`
 
   background-color: ${(props) => props.theme["base-post"]};
 
+  cursor: pointer;
+
   header {
     display: flex;
     align-items: flex-start;

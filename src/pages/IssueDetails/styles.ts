@@ -48,6 +48,8 @@ export const Header  = styled.header`
     align-items: center;
     gap: 0.5rem;
 
+    cursor: pointer;
+
     svg {
       width: 0.75rem;
       height: 0.75rem;
@@ -80,5 +82,48 @@ export const Tag = styled.div`
 
 export const IssueDescription = styled.section`
   max-width: 54rem;
-  margin: 2.5rem auto;
+  margin: 0 auto;
+  padding: 2.5rem 2rem;
+
+  display: flex;
+  gap: 0.75rem;
+  flex-direction: column;
+
+  line-height: 1.6;
+
+  img{
+    width: 100%;
+  }
+
+  h1 {
+    color: ${(props) => props.theme.blue};
+    font-size: 1.3rem;
+  }
+
+  h2 {
+    margin-top: 1rem;
+    color: ${(props) => props.theme.blue};
+    font-size: 1rem;
+  }
+
+  h3 {
+    margin-top: 0.625rem;
+    color: ${(props) => props.theme.blue};
+    font-size: 0.75rem;
+  }
+
+  ul, ol {
+    padding-left: 0;
+    margin-left: 20px; 
+    list-style-position: inside; 
+  }
+
+  li {
+    margin-top: .25rem
+  }
+
+  pre {
+    background-color: ${(props) => props.theme["base-post"]};
+    padding: 1rem;
+  }
 `

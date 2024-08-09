@@ -19,7 +19,7 @@ export function Home(){
           {
             issues &&
             issues.map(issue => (
-              <PostCard issue={issue}/>
+              <PostCard key={issue.number} issue={issue}/>
             ))
           }
         </PostsGrid>

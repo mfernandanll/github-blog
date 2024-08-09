@@ -15,7 +15,7 @@ export function Profile() {
       <Content>
         <Header>
           <h1>{userInfo.name}</h1>
-          <a href={userInfo.url}>
+          <a href={userInfo.url} target="_blank">
             Github
             <FontAwesomeIcon icon={faArrowUpRightFromSquare}/>
           </a>

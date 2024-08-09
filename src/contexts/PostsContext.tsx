@@ -24,10 +24,18 @@ export interface Issue {
   createdAt: string;
 }
 
+export interface IssueByNumber extends Issue{
+  number: number;
+  repository: string;
+  comments: number;
+  userName: string;
+}
+
 interface PostContextType {
   userInfo: UserInfo;
   issues: Issue[];
   fetchIssues: (query: string) => Promise<void>;
+  fetchIssueByNumber: (issueNumber: number) =>  Promise<IssueByNumber>;
 }
 
 export const PostContext = createContext({} as PostContextType)
@@ -36,8 +44,8 @@ interface PostProviderProps {
   children: ReactNode
 }
 
-const userName = 'mfernandanll'
-const repository = 'github-blog'
+const GITHUB_USER = 'mfernandanll'
+const REPO_NAME = 'github-blog'
 
 export function PostContextProvider({ children }: PostProviderProps){
   const [userInfo, setUserInfo] = useState<UserInfo>({
@@ -52,7 +60,7 @@ export function PostContextProvider({ children }: PostProviderProps){
   const [issues, setIssues] = useState<Issue[]>([]);
 
   async function fetchUserInfo(){
-    const response = await api.get(`users/${userName}`)
+    const response = await api.get(`users/${GITHUB_USER}`)
 
     const { login, avatar_url, html_url, name, bio, followers } = response.data;
     
@@ -67,7 +75,7 @@ export function PostContextProvider({ children }: PostProviderProps){
   }
 
   async function fetchIssues(query: string = ''){
-    const response = await api.get(`search/issues?q=${query}+repo:${userName}/${repository}`)  
+    const response = await api.get(`search/issues?q=${query}+repo:${GITHUB_USER}/${REPO_NAME}`)  
    
     const formatedIssues = response.data.items.map((item: ApiItem) => {
       return {
@@ -81,6 +89,22 @@ export function PostContextProvider({ children }: PostProviderProps){
     setIssues(formatedIssues);            
   }
 
+  async function fetchIssueByNumber(issueNumber: number){
+    const response = await api.get(`repos/${GITHUB_USER}/${REPO_NAME}/issues/${issueNumber}`)
+
+    const formatedIssue: IssueByNumber = {
+      number: issueNumber,
+      title: response.data.title,
+      description: response.data.body,
+      createdAt: response.data.created_at,
+      repository: response.data.html_url,
+      comments: response.data.comments,
+      userName: response.data.user.login
+    }
+
+    return formatedIssue
+  }
+
   useEffect(() => {
     fetchUserInfo()
     fetchIssues()
@@ -91,7 +115,8 @@ export function PostContextProvider({ children }: PostProviderProps){
       value={{
         userInfo,
         issues,
-        fetchIssues
+        fetchIssues,
+        fetchIssueByNumber
       }}
     >
       {children}

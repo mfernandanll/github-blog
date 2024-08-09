@@ -3,46 +3,83 @@ import { Header, IssueContainer, IssueDescription, IssueHeader, Tag, Tags } from
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft, faArrowUpRightFromSquare, faCalendarDay, faComment } from '@fortawesome/free-solid-svg-icons';
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
+import { Link, useParams } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { IssueByNumber, PostContext } from "../../contexts/PostsContext";
+import Markdown from "react-markdown";
+
+import { formatDistanceToNow } from "date-fns/formatDistanceToNow";
+import { ptBR } from "date-fns/locale/pt-BR";
 
 export function IssueDetails() {
+  const [issueInfo, setIssueInfo] = useState<IssueByNumber>(
+    {
+      number: 0,
+      comments: 0,
+      repository: '',
+      title: '',
+      userName: '',
+      createdAt: '',
+      description: ''
+    }
+  )
+  const { issueId } = useParams();
+  const { fetchIssueByNumber } = useContext(PostContext);  
+
+  const formatDate = (date: string) => formatDistanceToNow(new Date(date), {addSuffix: true, locale: ptBR})
+
+  useEffect(() => {
+    async function handleFetchIssue() {
+      const issue = await fetchIssueByNumber(Number(issueId))
+      setIssueInfo(issue)
+    }
+    
+    handleFetchIssue()
+    
+  }, [fetchIssueByNumber, issueId])
+
   return (
     <IssueContainer>
-      <IssueHeader>
-        <Header>
-          <a>
-            <FontAwesomeIcon icon={faChevronLeft} />
-            <span>Voltar</span>
-          </a>
-          <a href="https://github.com/mfernandanll">
-            <span>Ver no github</span>
-            <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
-          </a>
-        </Header>
+      {
+        issueInfo &&
+        <div>
+          <IssueHeader>
+            <Header>
+              <Link to='/'>
+                <FontAwesomeIcon icon={faChevronLeft} />
+                <span>Voltar</span>
+              </Link>
+              <a href={issueInfo.repository}>
+                <span>Ver no github</span>
+                <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
+              </a>
+            </Header>
 
-        <h1>JavaScript data types and data structures</h1>
+            <h1>{issueInfo.title}</h1>
 
-        <Tags>
-          <Tag>
-            <FontAwesomeIcon icon={faGithub} />
-            <span>mfernandanll</span>
-          </Tag>
-          <Tag>
-            <FontAwesomeIcon icon={faCalendarDay} />
-            <span>Há 1 dia</span>
-          </Tag>
-          <Tag>
-            <FontAwesomeIcon icon={faComment} />
-            <span>5 comentários</span>
-          </Tag>
-        </Tags>
-      </IssueHeader>
+            <Tags>
+              <Tag>
+                <FontAwesomeIcon icon={faGithub} />
+                <span>{issueInfo.userName}</span>
+              </Tag>
+              <Tag>
+                <FontAwesomeIcon icon={faCalendarDay} />
+                <span>{issueInfo.createdAt ? formatDate(issueInfo.createdAt) : 0}</span>
+              </Tag>
+              <Tag>
+                <FontAwesomeIcon icon={faComment} />
+                <span>{issueInfo.comments ?? 0} comentários</span>
+              </Tag>
+            </Tags>
+          </IssueHeader>
 
-      <IssueDescription>
-        <p>Programming languages all have built-in data structures, but these often differ from one language to another. This article attempts to list the built-in data structures available in JavaScript and what properties they have. These can be used to build other data structures. Wherever possible, comparisons with other languages are drawn.</p>
-        <p>
-          Dynamic typing JavaScript is a loosely typed and dynamic language. Variables in JavaScript are not directly associated with any particular value type, and any variable can be assigned (and re-assigned) values of all types:
-        </p>
-      </IssueDescription>
+          <IssueDescription>
+            <Markdown>
+              {issueInfo.description}
+            </Markdown>
+          </IssueDescription>
+        </div>
+      }
     </IssueContainer>
   )
 }
