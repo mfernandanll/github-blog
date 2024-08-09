@@ -1,9 +1,13 @@
-import { ChangeEvent, useContext, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { SearchContainer, SearchInput } from "./styles";
 import { PostContext } from "../../../../contexts/PostsContext";
+import { useContextSelector } from "use-context-selector";
 
 export function SearchForm() {
-  const { issues, fetchIssues } = useContext(PostContext);
+  const [ issues, fetchIssues ] = useContextSelector(PostContext, (context) => {
+    return [context.issues, context.fetchIssues]
+  })
+  
   const [searchTerm, setSearchTerm] = useState('');
   const issueQuantity = issues.length;
 

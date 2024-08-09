@@ -1,4 +1,5 @@
-import { createContext, ReactNode, useEffect, useState } from "react";
+import { ReactNode, useCallback, useEffect, useState } from "react";
+import { createContext } from 'use-context-selector'
 import { api } from "../lib/axios";
 
 interface UserInfo {
@@ -59,51 +60,60 @@ export function PostContextProvider({ children }: PostProviderProps){
 
   const [issues, setIssues] = useState<Issue[]>([]);
 
-  async function fetchUserInfo(){
-    const response = await api.get(`users/${GITHUB_USER}`)
+  const fetchUserInfo = useCallback(
+    async() => {
+      const response = await api.get(`users/${GITHUB_USER}`)
+  
+      const { login, avatar_url, html_url, name, bio, followers } = response.data;
+      
+      setUserInfo({
+        login,
+        avatarUrl: avatar_url,
+        url: html_url,
+        name,
+        description: bio,
+        followers
+      })
+    },
+    []
+  )
 
-    const { login, avatar_url, html_url, name, bio, followers } = response.data;
-    
-    setUserInfo({
-      login,
-      avatarUrl: avatar_url,
-      url: html_url,
-      name,
-      description: bio,
-      followers
-    })
-  }
+  const fetchIssues = useCallback(
+    async (query: string = '') => {
+      const response = await api.get(`search/issues?q=${query}+repo:${GITHUB_USER}/${REPO_NAME}`)  
+     
+      const formatedIssues = response.data.items.map((item: ApiItem) => {
+        return {
+          number: item.number,
+          title: item.title,
+          description: item.body,
+          createdAt: item.created_at,
+        }
+      })
+  
+      setIssues(formatedIssues);            
+    },
+    []
+  )
 
-  async function fetchIssues(query: string = ''){
-    const response = await api.get(`search/issues?q=${query}+repo:${GITHUB_USER}/${REPO_NAME}`)  
-   
-    const formatedIssues = response.data.items.map((item: ApiItem) => {
-      return {
-        number: item.number,
-        title: item.title,
-        description: item.body,
-        createdAt: item.created_at,
+  const fetchIssueByNumber = useCallback(
+    async (issueNumber: number) => {
+      const response = await api.get(`repos/${GITHUB_USER}/${REPO_NAME}/issues/${issueNumber}`)
+  
+      const formatedIssue: IssueByNumber = {
+        number: issueNumber,
+        title: response.data.title,
+        description: response.data.body,
+        createdAt: response.data.created_at,
+        repository: response.data.html_url,
+        comments: response.data.comments,
+        userName: response.data.user.login
       }
-    })
-
-    setIssues(formatedIssues);            
-  }
-
-  async function fetchIssueByNumber(issueNumber: number){
-    const response = await api.get(`repos/${GITHUB_USER}/${REPO_NAME}/issues/${issueNumber}`)
-
-    const formatedIssue: IssueByNumber = {
-      number: issueNumber,
-      title: response.data.title,
-      description: response.data.body,
-      createdAt: response.data.created_at,
-      repository: response.data.html_url,
-      comments: response.data.comments,
-      userName: response.data.user.login
-    }
-
-    return formatedIssue
-  }
+  
+      return formatedIssue
+    },
+    []
+  )
 
   useEffect(() => {
     fetchUserInfo()

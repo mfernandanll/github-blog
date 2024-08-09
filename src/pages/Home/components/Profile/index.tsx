@@ -2,11 +2,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { faUserGroup, faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { Content, Header, Tags, ProfileContainer, Tag } from "./styles";
-import { useContext } from "react";
 import { PostContext } from "../../../../contexts/PostsContext";
+import { useContextSelector } from "use-context-selector";
 
 export function Profile() {
-  const { userInfo } = useContext(PostContext)
+  const userInfo = useContextSelector(PostContext, (context) => {
+    return context.userInfo
+  })
 
   return (
     <ProfileContainer>

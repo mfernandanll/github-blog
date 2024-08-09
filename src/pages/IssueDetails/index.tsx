@@ -4,12 +4,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft, faArrowUpRightFromSquare, faCalendarDay, faComment } from '@fortawesome/free-solid-svg-icons';
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { Link, useParams } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { IssueByNumber, PostContext } from "../../contexts/PostsContext";
 import Markdown from "react-markdown";
 
 import { formatDistanceToNow } from "date-fns/formatDistanceToNow";
 import { ptBR } from "date-fns/locale/pt-BR";
+import { useContextSelector } from "use-context-selector";
 
 export function IssueDetails() {
   const [issueInfo, setIssueInfo] = useState<IssueByNumber>(
@@ -24,7 +25,9 @@ export function IssueDetails() {
     }
   )
   const { issueId } = useParams();
-  const { fetchIssueByNumber } = useContext(PostContext);  
+  const fetchIssueByNumber = useContextSelector(PostContext, (context) => {
+    return context.fetchIssueByNumber
+  })
 
   const formatDate = (date: string) => formatDistanceToNow(new Date(date), {addSuffix: true, locale: ptBR})
 
@@ -49,7 +52,7 @@ export function IssueDetails() {
                 <FontAwesomeIcon icon={faChevronLeft} />
                 <span>Voltar</span>
               </Link>
-              <a href={issueInfo.repository}>
+              <a href={issueInfo.repository} target="_blank">
                 <span>Ver no github</span>
                 <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
               </a>
