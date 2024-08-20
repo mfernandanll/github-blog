@@ -3,6 +3,8 @@ import styled from "styled-components";
 export const IssueContainer = styled.div`
   max-width: 54rem;
   margin: 0 auto;
+
+  min-height: calc(100vh - 18.5rem);
 `
 
 export const IssueHeader = styled.div`
