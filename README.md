@@ -30,8 +30,11 @@ O projeto apresenta várias funcionalidades, como a navegação entre páginas u
 A aplicação conta com as seguintes páginas:
 
 - Home
+
 !["Página home"](./src/assets/homepage.png)
+
 - Detalhes do post
+
 !["Página de detalhes do post"](./src/assets/detailspage.png)
 
 
